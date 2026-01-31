@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -8,24 +11,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const projects = [
-  {
-    id: 1,
-    name: "Apollo",
-    status: "Active",
-    startDate: "2024-01-10",
-    endDate: "2024-03-15",
-  },
-  {
-    id: 2,
-    name: "Beacon",
-    status: "Active",
-    startDate: "2024-02-01",
-    endDate: "2024-04-10",
-  },
-];
+type Project = {
+  id: number;
+  name: string;
+  description?: string;
+  start_date: string;
+  end_date?: string;
+};
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Projects from API:", data);
+        setProjects(data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -37,7 +43,6 @@ export default function ProjectsPage() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Start Date</TableHead>
             <TableHead>End Date</TableHead>
           </TableRow>
@@ -47,11 +52,12 @@ export default function ProjectsPage() {
           {projects.map((project) => (
             <TableRow key={project.id}>
               <TableCell className="font-medium">
-                <a href={`/projects/${project.id}`}>{project.name}</a>
+                <a href={`/projects/${project.id}`} className="underline">
+                  {project.name}
+                </a>
               </TableCell>
-              <TableCell>{project.status}</TableCell>
-              <TableCell>{project.startDate}</TableCell>
-              <TableCell>{project.endDate}</TableCell>
+              <TableCell>{project.start_date}</TableCell>
+              <TableCell>{project.end_date ?? "-"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -59,3 +65,4 @@ export default function ProjectsPage() {
     </div>
   );
 }
+  
