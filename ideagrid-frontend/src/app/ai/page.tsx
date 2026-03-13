@@ -69,7 +69,7 @@ ${timeline.map((t: any) => `- Sprint: "${t.sprint_name}" | Project: ${t.project_
 
     try {
     const response = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDcvnHtUKStvWb6uDDVo_AByOaKe3P0DT0`,
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY`,
   {
     method: "POST",
     headers: { "Content-Type": "application/json" },
